@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECON 4140 Financial Econometrics | Lecture 1 Public Class</title>
+
+  <!-- MathJax for formulas -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <!-- Chart.js for small visual demos -->
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --navy: #16324f;
+      --blue: #2563eb;
+      --light-blue: #eef5ff;
+      --gray: #f5f7fb;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #dbe3ef;
+      --green: #0f766e;
+      --orange: #c2410c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.65;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--navy), #1d4ed8);
+      color: white;
+      padding: 48px 8%;
+    }
+
+    header .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.28);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin: 0 0 12px;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      max-width: 900px;
+      margin: 0;
+      font-size: 18px;
+      opacity: 0.92;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 8%;
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--navy);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 7px 10px;
+      border-radius: 8px;
+    }
+
+    nav a:hover {
+      background: var(--light-blue);
+    }
+
+    nav a.pdf-link {
+      margin-left: auto;
+      background: var(--green);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(15, 118, 110, 0.12);
+    }
+
+    nav a.pdf-link:hover {
+      background: #0e6a60;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+    }
+
+    section {
+      margin: 34px 0;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    h2 {
+      color: var(--navy);
+      font-size: 28px;
+      margin: 0 0 16px;
+      border-left: 5px solid var(--blue);
+      padding-left: 12px;
+    }
+
+    h3 {
+      color: #1e3a8a;
+      margin-top: 26px;
+      font-size: 21px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--gray);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .formula {
+      background: #f8fbff;
+      border: 1px solid #cfe0ff;
+      border-left: 5px solid var(--blue);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      font-size: 18px;
+      overflow-x: auto;
+    }
+
+    .practice {
+      background: #fff8f1;
+      border: 1px solid #fed7aa;
+      border-left: 5px solid var(--orange);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .practice h4 {
+      margin: 0 0 8px;
+      color: var(--orange);
+      font-size: 18px;
+    }
+
+    .answer {
+      display: none;
+      margin-top: 12px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    button {
+      border: none;
+      background: var(--blue);
+      color: white;
+      padding: 9px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+      font-size: 15px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--light-blue);
+      color: var(--navy);
+    }
+
+    .note {
+      background: #f0fdfa;
+      border-left: 5px solid var(--green);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin: 14px 0;
+    }
+
+    .calculator {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      align-items: end;
+      margin-top: 12px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      font-size: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .result {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 12px;
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+
+    canvas {
+      max-height: 280px;
+      margin-top: 16px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px;
+      border-top: 1px solid var(--border);
+      background: #fafafa;
+    }
+
+    @media print {
+      nav, button, .calculator { display: none !important; }
+      section { box-shadow: none; page-break-inside: avoid; }
+      .answer { display: block !important; }
+      body { font-size: 12pt; }
+    }
+
+    @media (max-width: 760px) {
+      header h1 { font-size: 30px; }
+      .grid, .calculator { grid-template-columns: 1fr; }
+      section { padding: 20px; }
+    }
+
+    /* Interactive formula widgets */
+    .interactive-widget {
+      background: #2f2f2f;
+      color: #fff;
+      border-radius: 18px;
+      margin: 18px 0 26px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 235px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18);
+    }
+
+    .widget-left {
+      padding: 18px 20px;
+      border-right: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .widget-right {
+      padding: 18px 20px;
+      position: relative;
+      min-height: 230px;
+    }
+
+    .widget-close {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .widget-formula {
+      text-align: center;
+      font-size: 22px;
+      margin: 24px 0;
+    }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: 64px 42px 1fr;
+      gap: 8px;
+      align-items: center;
+      margin: 8px 0;
+      font-size: 13px;
+    }
+
+    .slider-row label {
+      color: #fff;
+      margin: 0;
+      font-style: italic;
+    }
+
+    .slider-row span {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .slider-row input[type="range"] {
+      accent-color: #94a3b8;
+      padding: 0;
+    }
+
+    .widget-summary {
+      font-size: 13px;
+      font-style: italic;
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    .mini-axis {
+      position: absolute;
+      left: 34px;
+      right: 34px;
+      bottom: 78px;
+      height: 1px;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .mean-line {
+      position: absolute;
+      bottom: 64px;
+      width: 1px;
+      height: 86px;
+      border-left: 2px dashed rgba(255,255,255,0.55);
+    }
+
+    .mean-label {
+      position: absolute;
+      bottom: 154px;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #fff;
+    }
+
+    .dot {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      background: #2563eb;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .stem {
+      position: absolute;
+      width: 1px;
+      background: rgba(255,255,255,0.45);
+      transform: translateX(-50%);
+    }
+
+    .widget-stat {
+      position: absolute;
+      top: 16px;
+      left: 26px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .return-node {
+      position: absolute;
+      width: 66px;
+      height: 30px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #f8fafc, #94a3b8 55%, #64748b);
+      top: 112px;
+      transform: translateX(-50%);
+      box-shadow: 0 4px 10px rgba(0,0,0,.3);
+    }
+
+    .return-line {
+      position: absolute;
+      left: 40px;
+      right: 40px;
+      top: 127px;
+      border-top: 3px solid rgba(255,255,255,.85);
+    }
+
+    .return-label {
+      position: absolute;
+      top: 148px;
+      transform: translateX(-50%);
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .return-total {
+      position: absolute;
+      top: 84px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    @media print {
+      .interactive-widget input { display: none; }
+    }
+
+    @media (max-width: 760px) {
+      .interactive-widget { grid-template-columns: 1fr; }
+      .widget-left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    }
+
+
+    .practice-bank {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+
+    .practice-bank h3 {
+      margin-top: 0;
+      color: var(--navy);
+    }
+
+    .mini-tag {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #075985;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .exam-tip {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-left: 5px solid #ca8a04;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin: 14px 0;
+    }
+
+    .two-col-list {
+      columns: 2;
+      column-gap: 32px;
+    }
+
+    @media (max-width: 760px) {
+      .two-col-list { columns: 1; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="tag">ECON 4140 · Summer 2026 · Public Lecture</div>
+    <h1>Financial Econometrics Lecture 1</h1>
+    <p>Probability, Statistics & Financial Returns — 以“知识点 + Practice 题目”的公开课讲义形式整理。</p>
+  </header>
+
+  <nav>
+    <a href="#overview">课程介绍</a>
+    <a href="#prob-stat">Probability vs Statistics</a>
+    <a href="#central">Central Tendency</a>
+    <a href="#spread">Spread</a>
+    <a href="#normal">Normal Distribution</a>
+    <a href="#returns">Financial Returns</a>
+    <a href="#random-walk">Random Walk</a>
+    <a href="#exam">Exam Focus</a>
+    <a class="pdf-link" href="S26_Econ4140_Class1.pdf" target="_blank" rel="noopener">Download PDF</a>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <h2>1. Course Overview</h2>
+      <p><strong>ECON 4140 Financial Econometrics</strong> 是金融计量经济学入门课程，重点介绍金融领域常用的统计方法与计量模型。</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>课程核心</h3>
+          <ul>
+            <li>Financial Returns and Risk</li>
+            <li>Time Series Models</li>
+            <li>Portfolio Theory</li>
+            <li>CAPM and Asset Pricing</li>
+            <li>ARCH / Volatility Modeling</li>
+            <li>Value-at-Risk and Option Pricing</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>学习目标</h3>
+          <ul>
+            <li>理解金融数据的统计特征</li>
+            <li>掌握收益率、波动率与风险度量</li>
+            <li>能够估计基础动态模型</li>
+            <li>能够解释软件输出结果</li>
+            <li>提升 SAS / R / Python 实证能力</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Summer 2026 Evaluation</h3>
+      <table>
+        <tr><th>Assessment</th><th>Weight</th></tr>
+        <tr><td>Group Assignment 1</td><td>10%</td></tr>
+        <tr><td>Group Assignment 2</td><td>10%</td></tr>
+        <tr><td>Midterm Exam</td><td>20%</td></tr>
+        <tr><td>Group Project 3</td><td>20%</td></tr>
+        <tr><td>Final Exam</td><td>40%</td></tr>
+      </table>
+    </section>
+
+    <section id="prob-stat">
+      <h2>2. Probability vs Statistics</h2>
+      <table>
+        <tr><th>Probability</th><th>Statistics</th></tr>
+        <tr><td>已知总体或模型，推断样本结果</td><td>已知样本数据，推断总体特征</td></tr>
+        <tr><td>Parameter: \( \mu, \sigma^2, \sigma \)</td><td>Estimator: \( \bar{x}, s^2, s \)</td></tr>
+      </table>
+
+      <div class="note">
+        <strong>考试提醒：</strong>题目问 “all population / entire group” 时，通常使用 population parameter；题目问 “sample data” 时，使用 sample statistic。
+      </div>
+
+      <div class="practice">
+        <h4>Practice 1</h4>
+        <p>某大学全部校友平均年龄为 50 岁。这个数值应该表示 \( \bar{x} \) 还是 \( \mu \)？</p>
+        <button onclick="toggleAnswer('a1')">Show Answer</button>
+        <div class="answer" id="a1">
+          这是 \( \mu \)，因为它描述的是全部校友，即 population mean。
+        </div>
+      </div>
+    </section>
+
+    <section id="central">
+      <h2>3. Measures of Central Tendency</h2>
+
+      <h3>3.1 Mean</h3>
+      <p>Mean 表示数据的平均水平，在金融中可用于表示资产长期平均收益率。</p>
+      <div class="formula">Population Mean: \( \mu = \frac{\sum x_i}{N} \)</div>
+      <div class="formula">Sample Mean: \( \bar{x} = \frac{\sum x_i}{n} \)</div>
+
+      <div class="practice">
+        <h4>Practice 2</h4>
+        <p>数据为 2, 4, 6, 8, 10。求 sample mean。</p>
+        <button onclick="toggleAnswer('a2')">Show Answer</button>
+        <div class="answer" id="a2">
+          \( \bar{x} = \frac{2+4+6+8+10}{5}=6 \)
+        </div>
+      </div>
+
+      <h3>3.2 Median</h3>
+      <p>Median 是排序后位于中间位置的数据。Median 对 outliers 更稳健。</p>
+
+      <div class="practice">
+        <h4>Practice 3</h4>
+        <p>数据为 1, 2, 3, 4, 100。求 mean 和 median，并说明哪个更适合描述数据中心。</p>
+        <button onclick="toggleAnswer('a3')">Show Answer</button>
+        <div class="answer" id="a3">
+          Mean = 22，Median = 3。由于 100 是极端值，median 更适合描述中心位置。
+        </div>
+      </div>
+
+      <h3>3.3 Trimmed Mean</h3>
+      <p>Trimmed mean 会去掉两端一定比例的极端值，再计算平均数，是 mean 和 median 之间的折中。</p>
+      <pre><code>R Example:
+x &lt;- c(80,80,80,80,80,81,82,78,79,70,73,74,64,45)
+mean(x, trim = 0.15)</code></pre>
+
+      <div class="practice-bank">
+        <h3>Central Tendency — Practice Bank</h3>
+
+        <div class="practice">
+          <h4>Practice 3A — Mean vs. Median and Skewness</h4>
+          <p>A sample of families has mean family size 3.2, median 2, and mode 2. What is the likely shape of the distribution?</p>
+          <button onclick="toggleAnswer('a3a')">Show Answer</button>
+          <div class="answer" id="a3a">
+            The distribution is likely <strong>right-skewed</strong>. Since mean &gt; median, a small number of large families pulls the mean upward.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 3B — Trimmed Mean</h4>
+          <p>A dataset has \(n=20\). For a 15% trimmed mean, how many observations should be removed from each tail?</p>
+          <button onclick="toggleAnswer('a3b')">Show Answer</button>
+          <div class="answer" id="a3b">
+            \(0.15 \times 20 = 3\). Remove the lowest 3 and highest 3 observations, then average the remaining 14 observations.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 3C — Robustness</h4>
+          <p>A wage dataset has one extremely high income. Which measure is more robust: mean or median? Why?</p>
+          <button onclick="toggleAnswer('a3c')">Show Answer</button>
+          <div class="answer" id="a3c">
+            The <strong>median</strong> is more robust because it depends on the middle position after sorting, while the mean uses every value and is pulled by outliers.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="spread">
+      <h2>4. Measures of Spread</h2>
+
+      <h3>4.1 Variance and Standard Deviation</h3>
+
+      <h3 style="font-size:18px;margin-top:10px;">Sample Variance</h3>
+      <div class="interactive-widget" id="varianceWidget">
+        <div class="widget-left">
+          <div class="widget-close">×</div>
+          <div class="widget-formula">\(s^2=\frac{\sum(x_i-\bar{x})^2}{n-1}\)</div>
+          <div>
+            <div class="slider-row">
+              <label>spread</label><span id="varSpreadText">2.0</span>
+              <input type="range" min="0.5" max="5" step="0.1" value="2" id="varSpread">
+            </div>
+            <div class="slider-row">
+              <label>n</label><span id="varNText">7</span>
+              <input type="range" min="3" max="12" step="1" value="7" id="varN">
+            </div>
+            <div class="widget-summary" id="varSummary">\(\bar{x}\approx0,\;s^2\approx0\)</div>
+          </div>
+        </div>
+        <div class="widget-right" id="varPlot">
+          <div class="widget-stat" id="varStat">s^2 ≈ 0</div>
+          <div class="mini-axis"></div>
+        </div>
+      </div>
+
+      <h3 style="font-size:18px;margin-top:10px;">Standard Deviation</h3>
+      <div class="interactive-widget" id="sdWidget">
+        <div class="widget-left">
+          <div class="widget-close">×</div>
+          <div class="widget-formula">\(s=\sqrt{s^2}\)</div>
+          <div>
+            <div class="slider-row">
+              <label>spread</label><span id="sdSpreadText">2.0</span>
+              <input type="range" min="0.5" max="5" step="0.1" value="2" id="sdSpread">
+            </div>
+            <div class="slider-row">
+              <label>n</label><span id="sdNText">7</span>
+              <input type="range" min="3" max="12" step="1" value="7" id="sdN">
+            </div>
+            <div class="widget-summary" id="sdSummary">\(\bar{x}\approx0,\;s\approx0\)</div>
+          </div>
+        </div>
+        <div class="widget-right" id="sdPlot">
+          <div class="widget-stat" id="sdStat">s ≈ 0</div>
+          <div class="mini-axis"></div>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>金融含义：</strong>Standard deviation 常被解释为 volatility。标准差越大，资产收益波动越强，风险越高。
+      </div>
+
+      <div class="practice">
+        <h4>Practice 4</h4>
+        <p>股票 A 和 B 的平均收益率均为 10%。A 的标准差为 2%，B 的标准差为 8%。哪个风险更高？</p>
+        <button onclick="toggleAnswer('a4')">Show Answer</button>
+        <div class="answer" id="a4">
+          B 风险更高，因为 B 的标准差更大，说明收益波动更强。
+        </div>
+      </div>
+
+      <h3>4.2 Coefficient of Variation</h3>
+      <div class="formula">\( CV=\frac{s}{\bar{x}} \)</div>
+      <p>CV 衡量单位收益对应的风险，适合比较平均收益不同的资产。</p>
+
+      <div class="calculator">
+        <div>
+          <label for="cvMean">Mean</label>
+          <input id="cvMean" type="number" value="10" step="0.01">
+        </div>
+        <div>
+          <label for="cvSd">Standard Deviation</label>
+          <input id="cvSd" type="number" value="2" step="0.01">
+        </div>
+        <button onclick="calcCV()">Calculate CV</button>
+      </div>
+      <div class="result" id="cvResult">CV = 0.20</div>
+
+      <div class="practice-bank">
+        <h3>Spread, Quartiles & CV — Practice Bank</h3>
+
+        <div class="practice">
+          <h4>Practice 4A — Range and IQR</h4>
+          <p>Five-number summary: Min = 20, Q1 = 35, Median = 42, Q3 = 50, Max = 90. Compute range and IQR. Which one is more robust?</p>
+          <button onclick="toggleAnswer('a4a')">Show Answer</button>
+          <div class="answer" id="a4a">
+            Range \(=90-20=70\). IQR \(=50-35=15\). The <strong>IQR</strong> is more robust because it focuses on the middle 50% and ignores extreme values.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 4B — Degrees of Freedom</h4>
+          <p>A sample has \(n=8\). What is the degree of freedom used in the sample variance formula? Why?</p>
+          <button onclick="toggleAnswer('a4b')">Show Answer</button>
+          <div class="answer" id="a4b">
+            \(df=n-1=7\). Once \(\bar{x}\) is estimated, the deviations from the mean must sum to zero, so only 7 deviations are free to vary.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 4C — Coefficient of Variation</h4>
+          <p>Asset A has mean return 8% and standard deviation 2%. Asset B has mean return 15% and standard deviation 4%. Which asset has higher relative risk?</p>
+          <button onclick="toggleAnswer('a4c')">Show Answer</button>
+          <div class="answer" id="a4c">
+            \(CV_A=2/8=0.25\). \(CV_B=4/15\approx0.267\). Asset B has slightly higher relative risk per unit of return.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 4D — Choosing Summary Statistics</h4>
+          <p>If a dataset is strongly right-skewed, should we summarize it using mean and standard deviation, or median and IQR?</p>
+          <button onclick="toggleAnswer('a4d')">Show Answer</button>
+          <div class="answer" id="a4d">
+            Use <strong>median and IQR</strong>. For skewed data, mean and standard deviation are sensitive to extreme values.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="normal">
+      <h2>5. Normal Distribution & Empirical Rule</h2>
+      <table>
+        <tr><th>Range</th><th>Approximate Probability</th></tr>
+        <tr><td>\( \mu \pm 1\sigma \)</td><td>68%</td></tr>
+        <tr><td>\( \mu \pm 2\sigma \)</td><td>95%</td></tr>
+        <tr><td>\( \mu \pm 3\sigma \)</td><td>99.7%</td></tr>
+      </table>
+
+      <canvas id="normalChart"></canvas>
+
+      <div class="practice">
+        <h4>Practice 5</h4>
+        <p>已知 mean return = 5%，standard deviation = 2%。若 returns 近似服从 normal distribution，收益落在 1% 到 9% 之间的概率约为多少？</p>
+        <button onclick="toggleAnswer('a5')">Show Answer</button>
+        <div class="answer" id="a5">
+          1% = \(5\%-2\times2\%\)，9% = \(5\%+2\times2\%\)，所以区间为 \( \mu \pm 2\sigma \)，概率约为 95%。
+        </div>
+      </div>
+
+      <h3>5.1 Standardization and Z-Scores</h3>
+      <div class="formula">\( z=\frac{x-\bar{x}}{s} \)</div>
+      <p>A z-score tells how many standard deviations an observation is above or below the mean. Standardization changes the scale, but not the shape of the distribution.</p>
+
+      <div class="calculator">
+        <div>
+          <label for="zX">Observation \(x\)</label>
+          <input id="zX" type="number" value="80" step="0.01">
+        </div>
+        <div>
+          <label for="zMean">Mean \(\bar{x}\)</label>
+          <input id="zMean" type="number" value="66" step="0.01">
+        </div>
+        <div>
+          <label for="zSd">Standard Deviation \(s\)</label>
+          <input id="zSd" type="number" value="10" step="0.01">
+        </div>
+        <button onclick="calcZ()">Calculate z-score</button>
+      </div>
+      <div class="result" id="zResult">z = 1.40</div>
+
+      <div class="practice-bank">
+        <h3>Normal Distribution, Z-Score & Histogram — Practice Bank</h3>
+
+        <div class="practice">
+          <h4>Practice 5A — Empirical Rule</h4>
+          <p>Starting salaries have mean $50,000 and standard deviation $10,000. Assume a bell-shaped distribution. Approximately what percent of salaries are between $30,000 and $70,000?</p>
+          <button onclick="toggleAnswer('a5a')">Show Answer</button>
+          <div class="answer" id="a5a">
+            $30,000 and $70,000 are \(\mu \pm 2\sigma\). By the empirical rule, about <strong>95%</strong> of salaries fall in this range.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 5B — Tail Probability by Empirical Rule</h4>
+          <p>Using the same salary distribution, approximately what percent of salaries are above $70,000?</p>
+          <button onclick="toggleAnswer('a5b')">Show Answer</button>
+          <div class="answer" id="a5b">
+            Above $70,000 is above \(\mu+2\sigma\). About 5% lies outside \(\mu\pm2\sigma\), split equally between two tails, so the answer is about <strong>2.5%</strong>.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 5C — Z-Score Interpretation</h4>
+          <p>A student scores 84 on a test with mean 72 and standard deviation 6. Compute and interpret the z-score.</p>
+          <button onclick="toggleAnswer('a5c')">Show Answer</button>
+          <div class="answer" id="a5c">
+            \(z=(84-72)/6=2\). The score is <strong>2 standard deviations above</strong> the mean.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 5D — Histogram Shape</h4>
+          <p>A histogram has two clear peaks. What does this suggest about the data?</p>
+          <button onclick="toggleAnswer('a5d')">Show Answer</button>
+          <div class="answer" id="a5d">
+            It suggests a <strong>bimodal distribution</strong>, often because the dataset combines two different subgroups.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="returns">
+      <h2>6. Financial Returns</h2>
+
+      <h3>6.1 Net Return</h3>
+      <div class="formula">\( R_t=\frac{P_t-P_{t-1}}{P_{t-1}} \)</div>
+
+      <h3>6.2 Gross Return</h3>
+      <div class="formula">\( 1+R_t=\frac{P_t}{P_{t-1}} \)</div>
+
+      <h3>6.3 Log Return</h3>
+      <div class="formula">\( r_t=\ln\left(\frac{P_t}{P_{t-1}}\right) \)</div>
+
+      <div class="note">
+        <strong>为什么金融计量喜欢 log return？</strong>Log returns 具有可加性，更适合多期收益和时间序列建模。
+      </div>
+
+      <h3>6.4 Multi-period Log Returns</h3>
+      <div class="interactive-widget" id="logReturnWidget">
+        <div class="widget-left">
+          <div class="widget-close">×</div>
+          <div class="widget-formula">\(r_{1,3}=r_1+r_2+r_3\)</div>
+          <div>
+            <div class="slider-row">
+              <label>R₁</label><span id="r1Text">4.5</span>
+              <input type="range" min="-10" max="20" step="0.5" value="4.5" id="r1Slider">
+            </div>
+            <div class="slider-row">
+              <label>R₂</label><span id="r2Text">9.5</span>
+              <input type="range" min="-10" max="20" step="0.5" value="9.5" id="r2Slider">
+            </div>
+            <div class="slider-row">
+              <label>R₃</label><span id="r3Text">11.0</span>
+              <input type="range" min="-10" max="20" step="0.5" value="11" id="r3Slider">
+            </div>
+            <div class="slider-row">
+              <label>V</label><span id="vText">100</span>
+              <input type="range" min="50" max="200" step="5" value="100" id="vSlider">
+            </div>
+            <div class="widget-summary" id="logSummary">Total log return ≈ 0</div>
+          </div>
+        </div>
+        <div class="widget-right" id="logPlot">
+          <div class="return-line"></div>
+          <div class="return-total" id="logTotalText">Total = 0</div>
+        </div>
+      </div>
+
+      <div class="calculator">
+        <div>
+          <label for="p0">Previous Price \(P_{t-1}\)</label>
+          <input id="p0" type="number" value="100" step="0.01">
+        </div>
+        <div>
+          <label for="p1">Current Price \(P_t\)</label>
+          <input id="p1" type="number" value="110" step="0.01">
+        </div>
+        <button onclick="calcReturns()">Calculate Returns</button>
+      </div>
+      <div class="result" id="returnResult">Net Return = 10.00%; Gross Return = 1.1000; Log Return = 9.53%</div>
+
+      <div class="practice">
+        <h4>Practice 6</h4>
+        <p>若 \(P_{t-1}=100\)，\(P_t=110\)，求 net return。</p>
+        <button onclick="toggleAnswer('a6')">Show Answer</button>
+        <div class="answer" id="a6">
+          \( R_t=\frac{110-100}{100}=0.10=10\% \)
+        </div>
+      </div>
+
+      <div class="practice-bank">
+        <h3>Financial Returns — Practice Bank</h3>
+
+        <div class="practice">
+          <h4>Practice 6A — Net and Gross Return</h4>
+          <p>A stock price increases from 50 to 55. Compute the net return and gross return.</p>
+          <button onclick="toggleAnswer('a6a')">Show Answer</button>
+          <div class="answer" id="a6a">
+            Net return \(R=(55-50)/50=0.10=10\%\). Gross return \(1+R=55/50=1.10\).
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 6B — Log Return</h4>
+          <p>A stock price increases from 100 to 120. Compute the log return.</p>
+          <button onclick="toggleAnswer('a6b')">Show Answer</button>
+          <div class="answer" id="a6b">
+            \(r=\ln(120/100)=\ln(1.2)\approx0.1823=18.23\%\).
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Practice 6C — Multi-period Log Return</h4>
+          <p>Three daily log returns are 0.01, -0.02, and 0.03. What is the three-day log return?</p>
+          <button onclick="toggleAnswer('a6c')">Show Answer</button>
+          <div class="answer" id="a6c">
+            Multi-period log returns are additive: \(0.01-0.02+0.03=0.02\), or approximately 2%.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="random-walk">
+      <h2>7. Random Walk & EMH</h2>
+
+      <h3>7.1 Random Walk</h3>
+      <div class="formula">\( P_t=P_{t-1}+u_t \)</div>
+      <p>Random walk 表示价格变化主要来自随机冲击，过去价格不能稳定预测未来价格。</p>
+
+      <h3>7.2 Efficient Market Hypothesis</h3>
+      <p>如果市场有效，所有公开信息已经反映在价格中，因此投资者无法长期稳定获得 abnormal return。</p>
+
+      <div class="practice">
+        <h4>Practice 7</h4>
+        <p>如果 log-prices follow a random walk，过去价格是否能稳定预测未来价格？</p>
+        <button onclick="toggleAnswer('a7')">Show Answer</button>
+        <div class="answer" id="a7">
+          不能。Random walk 暗示价格变化不可预测，未来价格主要由新的随机信息决定。
+        </div>
+      </div>
+    </section>
+
+    <section id="exam">
+      <h2>8. Exam Focus</h2>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Midterm 高频知识点</h3>
+          <ul>
+            <li>Mean / Median / Trimmed Mean</li>
+            <li>Variance / Standard Deviation</li>
+            <li>Percentiles / Quartiles / IQR</li>
+            <li>Empirical Rule</li>
+            <li>Net / Gross / Log Returns</li>
+            <li>Random Walk and EMH</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Common Mistakes</h3>
+          <ul>
+            <li>混淆 \( \mu \) 和 \( \bar{x} \)</li>
+            <li>忘记 sample variance 分母是 \( n-1 \)</li>
+            <li>log return 与 net return 混用</li>
+            <li>误以为 standard deviation 越小收益越高</li>
+            <li>不会解释 p-value 与 normality test</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="practice-bank">
+        <h3>Integrated Review Questions</h3>
+
+        <div class="practice">
+          <h4>Review Q1 — Parameter or Statistic?</h4>
+          <p>A researcher reports the average return of all stocks in an index. Is this closer to \( \mu \) or \( \bar{x} \)?</p>
+          <button onclick="toggleAnswer('r1')">Show Answer</button>
+          <div class="answer" id="r1">
+            It is closer to \( \mu \), because it describes the entire population/index being considered.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Review Q2 — Outlier Effect</h4>
+          <p>If the maximum salary in a dataset increases from $120,000 to $200,000, what happens to mean, median, range, IQR, and standard deviation?</p>
+          <button onclick="toggleAnswer('r2')">Show Answer</button>
+          <div class="answer" id="r2">
+            Mean increases; median stays about the same; range increases; IQR stays about the same; standard deviation increases.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Review Q3 — Best Summary Choice</h4>
+          <p>For a roughly symmetric return distribution, which pair is usually appropriate: mean/s.d. or median/IQR?</p>
+          <button onclick="toggleAnswer('r3')">Show Answer</button>
+          <div class="answer" id="r3">
+            Mean and standard deviation are usually appropriate for roughly symmetric data.
+          </div>
+        </div>
+
+        <div class="practice">
+          <h4>Review Q4 — Normality Test</h4>
+          <p>A normality test gives p-value = 0.004. At the 5% level, what do we conclude?</p>
+          <button onclick="toggleAnswer('r4')">Show Answer</button>
+          <div class="answer" id="r4">
+            Since \(0.004 &lt; 0.05\), reject \(H_0\). The data do not appear normally distributed.
+          </div>
+        </div>
+      </div>
+
+      <div class="exam-tip">
+        <strong>Public Class Takeaway:</strong> Descriptive statistics are not just calculations. In ECON 4140, you must also explain what each number means in a financial or empirical context.
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    ECON 4140 Financial Econometrics · Lecture 1 Public Class Notes · Patrick
+  </footer>
+
+  <script>
+    function toggleAnswer(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === "block" ? "none" : "block";
+    }
+
+    function calcCV() {
+      const mean = parseFloat(document.getElementById("cvMean").value);
+      const sd = parseFloat(document.getElementById("cvSd").value);
+      const result = document.getElementById("cvResult");
+
+      if (!mean || mean === 0 || isNaN(sd)) {
+        result.textContent = "Please enter valid values. Mean cannot be zero.";
+        return;
+      }
+
+      result.textContent = "CV = " + (sd / mean).toFixed(4);
+    }
+
+
+    function calcZ() {
+      const x = parseFloat(document.getElementById("zX").value);
+      const mean = parseFloat(document.getElementById("zMean").value);
+      const sd = parseFloat(document.getElementById("zSd").value);
+      const result = document.getElementById("zResult");
+
+      if (isNaN(x) || isNaN(mean) || !sd || sd <= 0) {
+        result.textContent = "Please enter valid values. Standard deviation must be positive.";
+        return;
+      }
+
+      const z = (x - mean) / sd;
+      result.textContent = "z = " + z.toFixed(2) + " (" + Math.abs(z).toFixed(2) + " standard deviations " + (z >= 0 ? "above" : "below") + " the mean)";
+    }
+
+    function calcReturns() {
+      const p0 = parseFloat(document.getElementById("p0").value);
+      const p1 = parseFloat(document.getElementById("p1").value);
+      const result = document.getElementById("returnResult");
+
+      if (!p0 || p0 <= 0 || !p1 || p1 <= 0) {
+        result.textContent = "Please enter valid positive prices.";
+        return;
+      }
+
+      const net = (p1 - p0) / p0;
+      const gross = p1 / p0;
+      const logReturn = Math.log(gross);
+
+      result.textContent =
+        "Net Return = " + (net * 100).toFixed(2) + "%; " +
+        "Gross Return = " + gross.toFixed(4) + "; " +
+        "Log Return = " + (logReturn * 100).toFixed(2) + "%";
+    }
+
+
+    function makeSymmetricData(n, spread) {
+      const data = [];
+      const mid = (n - 1) / 2;
+      for (let i = 0; i < n; i++) {
+        const base = i - mid;
+        const wave = Math.sin(i * 1.7) * 0.12;
+        data.push((base + wave) * spread / Math.max(1, mid));
+      }
+      return data;
+    }
+
+    function drawDistributionWidget(plotId, statId, summaryId, n, spread, mode) {
+      const plot = document.getElementById(plotId);
+      if (!plot) return;
+
+      plot.querySelectorAll(".dot,.stem,.mean-line,.mean-label").forEach(el => el.remove());
+
+      const data = makeSymmetricData(n, spread);
+      const mean = data.reduce((a, b) => a + b, 0) / data.length;
+      const variance = data.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / (data.length - 1);
+      const sd = Math.sqrt(variance);
+
+      const stat = document.getElementById(statId);
+      const summary = document.getElementById(summaryId);
+
+      if (mode === "variance") {
+        stat.textContent = "s^2 ≈ " + variance.toFixed(3);
+        summary.textContent = "xbar ≈ " + mean.toFixed(2) + "; s^2 ≈ " + variance.toFixed(3);
+      } else {
+        stat.textContent = "s ≈ " + sd.toFixed(3);
+        summary.textContent = "xbar ≈ " + mean.toFixed(2) + "; s ≈ " + sd.toFixed(3);
+      }
+
+      const width = plot.clientWidth || 420;
+      const left = 44;
+      const right = width - 44;
+      const maxAbs = 5.2;
+      const xMap = x => left + ((x + maxAbs) / (2 * maxAbs)) * (right - left);
+      const axisY = 152;
+
+      const meanX = xMap(mean);
+      const meanLine = document.createElement("div");
+      meanLine.className = "mean-line";
+      meanLine.style.left = meanX + "px";
+      plot.appendChild(meanLine);
+
+      const meanLabel = document.createElement("div");
+      meanLabel.className = "mean-label";
+      meanLabel.style.left = meanX + "px";
+      meanLabel.textContent = "xbar=" + mean.toFixed(2);
+      plot.appendChild(meanLabel);
+
+      data.forEach((x, i) => {
+        const px = xMap(x);
+        const py = axisY - 20 - (i % 3) * 8;
+
+        const stem = document.createElement("div");
+        stem.className = "stem";
+        stem.style.left = px + "px";
+        stem.style.top = py + "px";
+        stem.style.height = (axisY - py) + "px";
+        plot.appendChild(stem);
+
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        dot.style.left = px + "px";
+        dot.style.top = py + "px";
+        plot.appendChild(dot);
+      });
+    }
+
+    function updateVarianceWidget() {
+      const spread = parseFloat(document.getElementById("varSpread").value);
+      const n = parseInt(document.getElementById("varN").value);
+      document.getElementById("varSpreadText").textContent = spread.toFixed(1);
+      document.getElementById("varNText").textContent = n;
+      drawDistributionWidget("varPlot", "varStat", "varSummary", n, spread, "variance");
+    }
+
+    function updateSdWidget() {
+      const spread = parseFloat(document.getElementById("sdSpread").value);
+      const n = parseInt(document.getElementById("sdN").value);
+      document.getElementById("sdSpreadText").textContent = spread.toFixed(1);
+      document.getElementById("sdNText").textContent = n;
+      drawDistributionWidget("sdPlot", "sdStat", "sdSummary", n, spread, "sd");
+    }
+
+    function updateLogReturnWidget() {
+      const r1 = parseFloat(document.getElementById("r1Slider").value);
+      const r2 = parseFloat(document.getElementById("r2Slider").value);
+      const r3 = parseFloat(document.getElementById("r3Slider").value);
+      const v0 = parseFloat(document.getElementById("vSlider").value);
+
+      document.getElementById("r1Text").textContent = r1.toFixed(1);
+      document.getElementById("r2Text").textContent = r2.toFixed(1);
+      document.getElementById("r3Text").textContent = r3.toFixed(1);
+      document.getElementById("vText").textContent = v0.toFixed(0);
+
+      const log1 = Math.log(1 + r1 / 100);
+      const log2 = Math.log(1 + r2 / 100);
+      const log3 = Math.log(1 + r3 / 100);
+      const total = log1 + log2 + log3;
+
+      const v1 = v0 * Math.exp(log1);
+      const v2 = v1 * Math.exp(log2);
+      const v3 = v2 * Math.exp(log3);
+
+      document.getElementById("logSummary").textContent =
+        "r_total = r1 + r2 + r3 ≈ " + total.toFixed(3) + "; final value ≈ " + v3.toFixed(2);
+      document.getElementById("logTotalText").textContent = "Total log return = " + total.toFixed(3);
+
+      const plot = document.getElementById("logPlot");
+      plot.querySelectorAll(".return-node,.return-label").forEach(el => el.remove());
+
+      const xs = [32, 50, 68];
+      const values = [v1, v2, v3];
+      xs.forEach((pct, i) => {
+        const node = document.createElement("div");
+        node.className = "return-node";
+        node.style.left = pct + "%";
+        plot.appendChild(node);
+
+        const label = document.createElement("div");
+        label.className = "return-label";
+        label.style.left = pct + "%";
+        label.textContent = "V" + (i + 1) + " = " + values[i].toFixed(2);
+        plot.appendChild(label);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      calcCV();
+      calcReturns();
+      calcZ();
+
+      ["varSpread","varN"].forEach(id => document.getElementById(id)?.addEventListener("input", updateVarianceWidget));
+      ["sdSpread","sdN"].forEach(id => document.getElementById(id)?.addEventListener("input", updateSdWidget));
+      ["r1Slider","r2Slider","r3Slider","vSlider"].forEach(id => document.getElementById(id)?.addEventListener("input", updateLogReturnWidget));
+      ["zX","zMean","zSd"].forEach(id => document.getElementById(id)?.addEventListener("input", calcZ));
+      updateVarianceWidget();
+      updateSdWidget();
+      updateLogReturnWidget();
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise();
+      }
+
+      const ctx = document.getElementById("normalChart");
+      if (ctx && window.Chart) {
+        const xs = [];
+        const ys = [];
+        for (let x = -3.5; x <= 3.5; x += 0.1) {
+          xs.push(x.toFixed(1));
+          ys.push((1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x));
+        }
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: xs,
+            datasets: [{
+              label: "Standard Normal Distribution",
+              data: ys,
+              borderWidth: 2,
+              pointRadius: 0,
+              tension: 0.25
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: true }
+            },
+            scales: {
+              x: { title: { display: true, text: "z-score" } },
+              y: { title: { display: true, text: "density" } }
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
