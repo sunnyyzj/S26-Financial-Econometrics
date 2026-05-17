@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECON 4140 Financial Econometrics | Lecture 2 Public Class</title>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --navy:#16324f; --blue:#2563eb; --light-blue:#eef5ff; --gray:#f5f7fb;
+      --text:#1f2937; --muted:#6b7280; --border:#dbe3ef; --green:#0f766e;
+      --orange:#c2410c; --purple:#6d28d9; --red:#b91c1c;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:"Segoe UI",Arial,"Microsoft YaHei",sans-serif;color:var(--text);background:#fff;line-height:1.68}
+    header{background:linear-gradient(135deg,var(--navy),#1d4ed8);color:#fff;padding:50px 8%}
+    header .tag{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:6px 12px;border-radius:999px;font-size:14px;margin-bottom:16px}
+    header h1{font-size:42px;line-height:1.15;margin:0 0 12px;letter-spacing:-.5px}
+    header p{max-width:920px;margin:0;font-size:18px;opacity:.94}
+    nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 8%;display:flex;gap:12px;overflow-x:auto;white-space:nowrap}
+    nav a{text-decoration:none;color:var(--navy);font-weight:700;font-size:14px;padding:7px 10px;border-radius:8px}
+    nav a:hover{background:var(--light-blue)}
+    nav a.pdf-link{margin-left:auto;background:var(--green);color:white;padding:8px 12px;border-radius:10px;box-shadow:0 6px 16px rgba(15,118,110,.12)}
+    nav a.pdf-link:hover{background:#0e6a60;color:#fff;transform:translateY(-1px)}
+    a.pdf-link{margin-left:auto;background:var(--green);color:white;padding:8px 12px;border-radius:10px;box-shadow:0 6px 16px rgba(15,118,110,.12)}
+    a.pdf-link:hover{background:#0e6a60;color:#fff;transform:translateY(-1px)}
+    main{max-width:1120px;margin:0 auto;padding:36px 24px 80px}
+    section{margin:34px 0;padding:28px;border:1px solid var(--border);border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.045)}
+    h2{color:var(--navy);font-size:28px;margin:0 0 16px;border-left:5px solid var(--blue);padding-left:12px}
+    h3{color:#1e3a8a;margin-top:26px;font-size:21px}
+    h4{font-size:18px;margin:0 0 8px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .card{background:var(--gray);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .formula{background:#f8fbff;border:1px solid #cfe0ff;border-left:5px solid var(--blue);border-radius:12px;padding:14px 18px;margin:14px 0;font-size:18px;overflow-x:auto}
+    .note{background:#f0fdfa;border-left:5px solid var(--green);padding:14px 16px;border-radius:12px;margin:14px 0}
+    .exam-tip{background:#fefce8;border:1px solid #fde68a;border-left:5px solid #ca8a04;border-radius:12px;padding:13px 15px;margin:16px 0}
+    .warning{background:#fff1f2;border:1px solid #fecdd3;border-left:5px solid var(--red);border-radius:12px;padding:13px 15px;margin:16px 0}
+    table{border-collapse:collapse;width:100%;margin:12px 0;font-size:15px}
+    th,td{border:1px solid var(--border);padding:10px 12px;text-align:left}
+    th{background:var(--light-blue);color:var(--navy)}
+    button{border:none;background:var(--blue);color:white;padding:9px 14px;border-radius:10px;cursor:pointer;font-weight:700;margin-top:8px}
+    button:hover{background:#1d4ed8}
+    input,select{width:100%;padding:10px;border-radius:9px;border:1px solid var(--border);font-size:15px}
+    label{display:block;font-weight:700;margin-bottom:4px}
+    .calculator{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:end;margin-top:12px}
+    .result{background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:12px;margin-top:12px;font-weight:700;color:#1e3a8a}
+    .practice-bank{background:#f8fafc;border:1px solid var(--border);border-radius:16px;padding:18px;margin-top:18px}
+    .practice{background:#fff8f1;border:1px solid #fed7aa;border-left:5px solid var(--orange);border-radius:14px;padding:18px;margin:18px 0}
+    .practice h4{color:var(--orange)}
+    .answer{display:none;margin-top:12px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;padding:12px}
+    .mini-tag{display:inline-block;background:#e0f2fe;color:#075985;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:800;margin-right:6px}
+    pre{background:#0f172a;color:#e5e7eb;border-radius:14px;padding:16px;overflow:auto;font-size:14px}
+    canvas{max-height:360px;margin-top:16px}
+
+    .interactive-widget{background:#2f2f2f;color:#fff;border-radius:18px;margin:18px 0 26px;overflow:hidden;display:grid;grid-template-columns:1fr 1.25fr;min-height:280px;box-shadow:0 10px 26px rgba(15,23,42,.18)}
+    .widget-left{padding:18px 20px;border-right:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;justify-content:space-between}
+    .widget-right{padding:18px 20px;position:relative;min-height:280px}
+    .widget-close{font-size:18px;opacity:.9}
+    .widget-formula{text-align:center;font-size:22px;margin:24px 0}
+    .slider-row{display:grid;grid-template-columns:78px 52px 1fr;gap:8px;align-items:center;margin:8px 0;font-size:13px}
+    .slider-row label{color:#fff;margin:0;font-style:italic}
+    .slider-row span{color:#fff;font-weight:800}
+    .slider-row input[type=range]{accent-color:#93c5fd;padding:0}
+    .widget-summary{font-size:13px;font-style:italic;color:#fff;margin-top:10px}
+    .widget-stat{position:absolute;top:16px;left:26px;color:#fff;font-weight:800;font-size:13px}
+    .mini-axis-x{position:absolute;left:42px;right:34px;bottom:52px;height:1px;background:rgba(255,255,255,.26)}
+    .mini-axis-y{position:absolute;left:42px;top:34px;bottom:52px;width:1px;background:rgba(255,255,255,.26)}
+    .scatter-dot{position:absolute;width:8px;height:8px;background:#60a5fa;border-radius:50%;transform:translate(-50%,-50%)}
+    .reg-line{position:absolute;height:2px;background:#f8fafc;transform-origin:left center;opacity:.9}
+    .bubble{position:absolute;background:rgba(37,99,235,.9);border:2px solid rgba(255,255,255,.9);border-radius:50%;transform:translate(-50%,-50%)}
+    .axis-label{position:absolute;color:#dbeafe;font-size:12px}
+    .quiz-option{display:block;width:100%;text-align:left;background:#fff;color:var(--text);border:1px solid var(--border);margin:8px 0;padding:10px;border-radius:10px}
+    .quiz-option.correct{border-color:#10b981;background:#ecfdf5}
+    .quiz-option.wrong{border-color:#ef4444;background:#fff1f2}
+    footer{text-align:center;color:var(--muted);padding:28px;border-top:1px solid var(--border);background:#fafafa}
+
+    @media print{
+      nav,button,.calculator{display:none!important}
+      section{box-shadow:none;page-break-inside:avoid}
+      .answer{display:block!important}
+      .interactive-widget{break-inside:avoid}
+    }
+    @media(max-width:760px){
+      header h1{font-size:30px}.grid,.calculator,.interactive-widget{grid-template-columns:1fr}
+      section{padding:20px}.widget-left{border-right:none;border-bottom:1px solid rgba(255,255,255,.12)}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="tag">ECON 4140 · Summer 2026 · Public Lecture</div>
+  <h1>Financial Econometrics Lecture 2</h1>
+  <p>Scatter Plots, Association, Covariance, Correlation & Causality — 以“知识点 + Practice 题目 + 互动图”的公开课讲义形式整理。</p>
+</header>
+
+<nav>
+  <a href="#overview">Lecture Overview</a>
+  <a href="#two-var">Two Variables</a>
+  <a href="#scatter">Scatterplots</a>
+  <a href="#cov">Covariance</a>
+  <a href="#corr">Correlation</a>
+  <a href="#spearman">Spearman</a>
+  <a href="#causality">Causality</a>
+  <a href="#practice">Practice Bank</a>
+  <a class="pdf-link" href="S26_Econ4140_Class2.pdf" target="_blank" rel="noopener">Download PDF</a>
+</nav>
+
+<main>
+<a class="pdf-link" href="S26_Econ4140_Class2.pdf" target="_blank" rel="noopener">Download PDF</a>
+
+<section id="overview">
+  <h2>1. Lecture Overview</h2>
+  <p><strong>Lecture 2</strong> 从一个变量的 descriptive statistics 过渡到两个变量之间的关系，重点学习如何用 scatter plot、covariance 与 correlation 描述变量之间的 association。</p>
+  <div class="grid">
+    <div class="card">
+      <h3>今日核心问题</h3>
+      <ul>
+        <li>x 和 y 是否有关联？</li>
+        <li>这种关系是 positive 还是 negative？</li>
+        <li>关系是否接近 linear？</li>
+        <li>correlation 是否能说明 causation？</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Exam Focus</h3>
+      <ul>
+        <li>Scatterplot interpretation</li>
+        <li>Covariance sign interpretation</li>
+        <li>Correlation coefficient \(r\)</li>
+        <li>Outliers and nonlinear relationships</li>
+        <li>Panel / cross-sectional / time-series data</li>
+        <li>Endogeneity and lurking variables</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">
+    <strong>公开课学习目标：</strong>本节不是只会套公式，而是要能用一句专业语言解释统计量：direction、strength、linear association、unit problem、outlier sensitivity、correlation vs causation。
+  </div>
+</section>
+
+<section id="two-var">
+  <h2>2. From One Variable to Two Variables</h2>
+  <p>Week 1 用一个变量 \(x\) 描述样本或总体；Week 2 开始用两个变量 \((x,y)\) 描述变量之间的关系。</p>
+  <table>
+    <tr><th>One Variable</th><th>Two Variables</th></tr>
+    <tr><td>\(\mu, \sigma^2, \sigma\)</td><td>\(\sigma_{xy}, \rho\)</td></tr>
+    <tr><td>\(\bar{x}, s^2, s\)</td><td>\(s_{xy}, r\)</td></tr>
+    <tr><td>Describe center and spread</td><td>Describe association between x and y</td></tr>
+  </table>
+
+  <div class="formula">Population data: \((x_1,y_1),(x_2,y_2),\ldots,(x_N,y_N)\)</div>
+  <div class="formula">Sample data: \((x_1,y_1),(x_2,y_2),\ldots,(x_n,y_n)\)</div>
+
+  <div class="practice">
+    <h4>Practice 1 — Data Type</h4>
+    <p>Bank of Canada inflation example uses monthly observations of inflation and an earlier overnight interest rate. Which type of data is this?</p>
+    <button onclick="toggleAnswer('p1')">Show Answer</button>
+    <div class="answer" id="p1">
+      It is <strong>time-series data</strong>, because the observations are monthly values over time.
+    </div>
+  </div>
+</section>
+
+<section id="scatter">
+  <h2>3. Scatterplots</h2>
+  <p>A scatterplot is the first tool for checking the relationship between two quantitative variables.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>What to Look For</h3>
+      <ul>
+        <li><strong>Direction:</strong> positive or negative</li>
+        <li><strong>Form:</strong> linear, curved, clustered</li>
+        <li><strong>Strength:</strong> tight or loose pattern</li>
+        <li><strong>Outliers:</strong> unusual influential points</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Professional wording</h3>
+      <p>“There appears to be a strong negative linear association between x and y.”</p>
+      <p>“The relationship may be nonlinear, so Pearson correlation alone may be misleading.”</p>
+    </div>
+  </div>
+
+  <h3>Interactive Scatterplot</h3>
+  <div class="interactive-widget" id="scatterWidget">
+    <div class="widget-left">
+      <div class="widget-close">×</div>
+      <div class="widget-formula">\(y=\alpha+\beta x+\varepsilon\)</div>
+      <div>
+        <div class="slider-row">
+          <label>slope</label><span id="slopeText">0.80</span>
+          <input type="range" min="-2" max="2" step="0.05" value="0.8" id="slopeSlider">
+        </div>
+        <div class="slider-row">
+          <label>noise</label><span id="noiseText">0.60</span>
+          <input type="range" min="0" max="2" step="0.05" value="0.6" id="noiseSlider">
+        </div>
+        <div class="slider-row">
+          <label>outlier</label><span id="outlierText">off</span>
+          <input type="range" min="0" max="1" step="1" value="0" id="outlierSlider">
+        </div>
+        <div class="widget-summary" id="scatterSummary">r ≈ 0</div>
+      </div>
+    </div>
+    <div class="widget-right" id="scatterPlot">
+      <div class="widget-stat" id="scatterStat">Correlation: r ≈ 0</div>
+      <div class="mini-axis-x"></div><div class="mini-axis-y"></div>
+      <div class="axis-label" style="right:28px;bottom:30px;">x</div>
+      <div class="axis-label" style="left:22px;top:22px;">y</div>
+    </div>
+  </div>
+
+  <pre><code>/* SAS Example */
+proc sgplot data=sashelp.class;
+  scatter x=height y=weight / group=sex;
+  ellipse x=height y=weight;
+  reg x=height y=weight / clm cli;
+run;
+
+proc corr data=sashelp.class plots=matrix(histogram);
+  var age height weight;
+run;</code></pre>
+</section>
+
+<section id="cov">
+  <h2>4. Covariance</h2>
+  <p>Covariance describes whether two variables tend to move together, but its magnitude depends on units, so it is not ideal for measuring strength.</p>
+
+  <h3>Population Covariance</h3>
+  <div class="formula">\(\sigma_{XY}=\frac{\sum (x_i-\mu_X)(y_i-\mu_Y)}{N}\)</div>
+
+  <h3>Sample Covariance</h3>
+  <div class="formula">\(s_{xy}=\frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{n-1}\)</div>
+
+  <table>
+    <tr><th>Covariance Sign</th><th>Interpretation</th></tr>
+    <tr><td>\(s_{xy}>0\)</td><td>x and y tend to move in the same direction</td></tr>
+    <tr><td>\(s_{xy}<0\)</td><td>as x increases, y tends to decrease</td></tr>
+    <tr><td>\(s_{xy}\approx0\)</td><td>little or no linear co-movement</td></tr>
+  </table>
+
+  <div class="warning">
+    <strong>Important:</strong> The magnitude of covariance has no direct meaning because it depends on the units of x and y.
+  </div>
+
+  <h3>Covariance Calculator</h3>
+  <p>Use the sample covariance formula with comma-separated x and y values.</p>
+  <div class="calculator">
+    <div>
+      <label for="covX">x values</label>
+      <input id="covX" value="28,28,32.5,39,45.9,57.8,58.1,62.5">
+    </div>
+    <div>
+      <label for="covY">y values</label>
+      <input id="covY" value="12.4,11.7,12.4,10.3,9.4,9.5,8,7.5">
+    </div>
+    <button onclick="calcCovCorr()">Calculate</button>
+  </div>
+  <div class="result" id="covResult">Covariance and correlation will appear here.</div>
+
+  <div class="practice">
+    <h4>Practice 2 — Interpret Covariance</h4>
+    <p>Suppose \(s_{xy}=-25.31\). Interpret this number professionally.</p>
+    <button onclick="toggleAnswer('p2')">Show Answer</button>
+    <div class="answer" id="p2">
+      The negative sign indicates a negative association: as x increases, y tends to decrease. The magnitude 25.31 has no direct interpretation because covariance depends on measurement units.
+    </div>
+  </div>
+</section>
+
+<section id="corr">
+  <h2>5. Correlation</h2>
+  <p>Correlation standardizes covariance, removing the effect of units. It measures the direction and strength of a <strong>linear</strong> relationship.</p>
+
+  <h3>Population Correlation</h3>
+  <div class="formula">\(\rho_{XY}=\frac{\sigma_{XY}}{\sigma_X\sigma_Y}\)</div>
+
+  <h3>Sample Correlation</h3>
+  <div class="formula">\(r_{xy}=\frac{s_{xy}}{s_xs_y}
+  =\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2\sum(y_i-\bar{y})^2}}\)</div>
+
+  <table>
+    <tr><th>Value of r</th><th>Interpretation</th></tr>
+    <tr><td>\(r\approx1\)</td><td>strong positive linear relationship</td></tr>
+    <tr><td>\(r\approx-1\)</td><td>strong negative linear relationship</td></tr>
+    <tr><td>\(r\approx0\)</td><td>weak linear relationship, but not necessarily no relationship</td></tr>
+  </table>
+
+  <div class="exam-tip">
+    <strong>Exam wording:</strong> “Correlation near zero only means weak <em>linear</em> relationship. The variables may still have a nonlinear relationship.”
+  </div>
+
+  <h3>Interactive Nonlinear Example</h3>
+  <div class="interactive-widget" id="nonlinearWidget">
+    <div class="widget-left">
+      <div class="widget-close">×</div>
+      <div class="widget-formula">\(y=a(x-5)^2+\varepsilon\)</div>
+      <div>
+        <div class="slider-row">
+          <label>curve</label><span id="curveText">0.35</span>
+          <input type="range" min="0" max="0.8" step="0.05" value="0.35" id="curveSlider">
+        </div>
+        <div class="slider-row">
+          <label>noise</label><span id="curveNoiseText">0.40</span>
+          <input type="range" min="0" max="2" step="0.05" value="0.4" id="curveNoiseSlider">
+        </div>
+        <div class="widget-summary" id="nonlinearSummary">r may be close to zero even when a clear curved pattern exists.</div>
+      </div>
+    </div>
+    <div class="widget-right" id="nonlinearPlot">
+      <div class="widget-stat" id="nonlinearStat">Correlation: r ≈ 0</div>
+      <div class="mini-axis-x"></div><div class="mini-axis-y"></div>
+    </div>
+  </div>
+
+  <div class="practice">
+    <h4>Practice 3 — Multiple Choice</h4>
+    <p>Which statement is correct?</p>
+    <p>A) Positive linear relationship means all points must lie exactly on a straight line.<br>
+    B) Stronger positive relationship means r is closer to -1.<br>
+    C) Two variables that are uncorrelated may still be related nonlinearly.<br>
+    D) Stronger negative relationship means r is closer to +1.</p>
+    <button onclick="toggleAnswer('p3')">Show Answer</button>
+    <div class="answer" id="p3">
+      Correct answer: <strong>C</strong>. Correlation only measures linear association; nonlinear relationships may have \(r\approx0\).
+    </div>
+  </div>
+</section>
+
+<section id="spearman">
+  <h2>6. Spearman’s Rank Correlation</h2>
+  <p>Spearman correlation is the Pearson correlation applied to ranks. It is useful when the relationship is monotonic but not necessarily linear, or when raw values contain strong outliers.</p>
+
+  <div class="formula">\(r_s=\rho_{R(X),R(Y)}=\frac{\operatorname{Cov}(R(X),R(Y))}{\sigma_{R(X)}\sigma_{R(Y)}}\)</div>
+  <div class="formula">If ranks are distinct: \(\displaystyle r_s=1-\frac{6\sum d_i^2}{n(n^2-1)}\)</div>
+
+  <table>
+    <tr><th>Pearson r</th><th>Spearman \(r_s\)</th></tr>
+    <tr><td>Uses raw values</td><td>Uses ranks</td></tr>
+    <tr><td>Measures linear association</td><td>Measures monotonic association</td></tr>
+    <tr><td>Sensitive to outliers</td><td>Often less sensitive to outliers</td></tr>
+  </table>
+
+  <div class="practice">
+    <h4>Practice 4 — Spearman Formula</h4>
+    <p>For \(n=5\), suppose \(\sum d_i^2=2\). Compute \(r_s\).</p>
+    <button onclick="toggleAnswer('p4')">Show Answer</button>
+    <div class="answer" id="p4">
+      \(r_s=1-\frac{6(2)}{5(5^2-1)}=1-\frac{12}{120}=0.90\).
+    </div>
+  </div>
+</section>
+
+<section id="causality">
+  <h2>7. Association vs. Causality</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Descriptive Question</h3>
+      <p>Asks about patterns in data.</p>
+      <p><strong>Example:</strong> How does household spending on food vary with income?</p>
+    </div>
+    <div class="card">
+      <h3>Research Question</h3>
+      <p>Asks about causal effect.</p>
+      <p><strong>Example:</strong> How much does attendance affect learning?</p>
+    </div>
+  </div>
+
+  <h3>Key Concepts</h3>
+  <table>
+    <tr><th>Concept</th><th>Meaning</th></tr>
+    <tr><td>Observational Data</td><td>Variables are naturally observed; many lurking variables may exist.</td></tr>
+    <tr><td>Experimental Data</td><td>Researcher randomly assigns x values when possible.</td></tr>
+    <tr><td>Endogeneity</td><td>x is associated with unobserved factors that also affect y.</td></tr>
+    <tr><td>Exogeneity</td><td>x is not associated with factors that also affect y.</td></tr>
+    <tr><td>Lurking Variable</td><td>A hidden factor affecting both x and y.</td></tr>
+  </table>
+
+  <div class="warning">
+    <strong>Core sentence:</strong> Correlation does not necessarily imply causation. A strong correlation may be driven by omitted variables, reverse causality, or selection.
+  </div>
+
+  <h3>Interactive Causality Quiz</h3>
+  <div class="practice">
+    <h4>Quiz — Height and Reading Scores</h4>
+    <p>Educational data show that taller elementary school students have higher reading scores. What is the most likely issue?</p>
+    <button class="quiz-option" onclick="markQuiz(this,false)">A) Height directly causes better reading ability.</button>
+    <button class="quiz-option" onclick="markQuiz(this,true)">B) Age is a lurking variable affecting both height and reading ability.</button>
+    <button class="quiz-option" onclick="markQuiz(this,false)">C) Correlation must be zero.</button>
+    <button class="quiz-option" onclick="markQuiz(this,false)">D) The data must be experimental.</button>
+    <div class="answer" id="quizExplain" style="display:block;">
+      Click an option. The key is to identify lurking/confounding variables.
+    </div>
+  </div>
+</section>
+
+<section id="practice">
+  <h2>8. Practice Bank</h2>
+
+  <div class="practice">
+    <h4>Practice 5 — Correlation Interpretation</h4>
+    <p>Suppose \(r=-0.9421\). Interpret both sign and magnitude.</p>
+    <button onclick="toggleAnswer('p5')">Show Answer</button>
+    <div class="answer" id="p5">
+      The negative sign means x and y move in opposite directions. The magnitude \(|r|=0.9421\) indicates a very strong linear relationship.
+    </div>
+  </div>
+
+  <div class="practice">
+    <h4>Practice 6 — Strongest Positive Correlation</h4>
+    <p>Given correlations \(r_{wx}=0.3251\), \(r_{wy}=0.1711\), \(r_{wz}=0.6758\), \(r_{xy}=0.1259\), \(r_{xz}=0.4332\), \(r_{yz}=0.1873\), which pair has the strongest positive correlation?</p>
+    <button onclick="toggleAnswer('p6')">Show Answer</button>
+    <div class="answer" id="p6">
+      The strongest positive correlation is between <strong>w and z</strong>, because \(0.6758\) is the largest positive correlation.
+    </div>
+  </div>
+
+  <div class="practice">
+    <h4>Practice 7 — Variance-Covariance Matrix</h4>
+    <p>If \(s_x=3\), \(s_y=4\), and \(r_{xy}=0.5\), find \(s_{xy}\). What are the diagonal elements of the variance-covariance matrix?</p>
+    <button onclick="toggleAnswer('p7')">Show Answer</button>
+    <div class="answer" id="p7">
+      \(s_{xy}=r_{xy}s_xs_y=0.5(3)(4)=6\). Diagonal elements are variances: \(s_x^2=9\), \(s_y^2=16\). Matrix: \(\begin{pmatrix}9&6\\6&16\end{pmatrix}\).
+    </div>
+  </div>
+
+  <div class="practice">
+    <h4>Practice 8 — Panel Data</h4>
+    <p>Pollution data are observed for 103 water stations across 5 years. What type of data is this, and what is the unit of observation?</p>
+    <button onclick="toggleAnswer('p8')">Show Answer</button>
+    <div class="answer" id="p8">
+      This is <strong>panel data</strong>. The unit of observation is a water station in a particular year. There are \(103\times5=515\) station-year observations before accounting for missing values.
+    </div>
+  </div>
+
+  <div class="practice">
+    <h4>Practice 9 — Endogeneity</h4>
+    <p>Researchers find a positive correlation between long-term PM2.5 exposure and dementia rates. Why should we be careful before making a causal claim?</p>
+    <button onclick="toggleAnswer('p9')">Show Answer</button>
+    <div class="answer" id="p9">
+      PM2.5 exposure may be endogenous. People do not randomly choose where to live; income, education, health, smoking, and neighborhood conditions may affect both pollution exposure and dementia risk.
+    </div>
+  </div>
+
+  <div class="exam-tip">
+    <strong>Lecture 2 Takeaway:</strong> Use scatterplots to see the pattern, covariance to identify direction, correlation to measure linear strength, and causality concepts to avoid over-interpreting association.
+  </div>
+</section>
+</main>
+
+<footer>
+  ECON 4140 Financial Econometrics · Lecture 2 Public Class Notes · Patrick
+</footer>
+
+<script>
+function toggleAnswer(id){
+  const el=document.getElementById(id);
+  el.style.display=el.style.display==="block"?"none":"block";
+}
+
+function mean(arr){return arr.reduce((a,b)=>a+b,0)/arr.length}
+function sd(arr){
+  const m=mean(arr);
+  return Math.sqrt(arr.reduce((a,b)=>a+(b-m)**2,0)/(arr.length-1));
+}
+function covariance(x,y){
+  const mx=mean(x), my=mean(y);
+  let s=0; for(let i=0;i<x.length;i++) s+=(x[i]-mx)*(y[i]-my);
+  return s/(x.length-1);
+}
+function correlation(x,y){
+  return covariance(x,y)/(sd(x)*sd(y));
+}
+function parseNums(str){
+  return str.split(",").map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v));
+}
+
+function calcCovCorr(){
+  const x=parseNums(document.getElementById("covX").value);
+  const y=parseNums(document.getElementById("covY").value);
+  const out=document.getElementById("covResult");
+  if(x.length!==y.length || x.length<2){out.textContent="Please enter x and y with the same length, at least 2 observations.";return;}
+  const cov=covariance(x,y), r=correlation(x,y);
+  out.textContent=`n = ${x.length}; xbar = ${mean(x).toFixed(3)}; ybar = ${mean(y).toFixed(3)}; sample covariance = ${cov.toFixed(4)}; correlation r = ${r.toFixed(4)}`;
+}
+
+function seededNoise(i){
+  return Math.sin(i*12.9898)*43758.5453 % 1;
+}
+
+function drawScatter(plotId, points, statId, summaryId, line=true){
+  const plot=document.getElementById(plotId);
+  if(!plot) return;
+  plot.querySelectorAll(".scatter-dot,.reg-line,.bubble").forEach(e=>e.remove());
+  const xs=points.map(p=>p.x), ys=points.map(p=>p.y);
+  const r=correlation(xs,ys);
+  document.getElementById(statId).textContent=`Correlation: r ≈ ${r.toFixed(3)}`;
+  if(summaryId) document.getElementById(summaryId).textContent=`Direction: ${r>=0?"positive":"negative"}; linear strength |r| ≈ ${Math.abs(r).toFixed(3)}`;
+
+  const w=plot.clientWidth||460, h=plot.clientHeight||280;
+  const minX=Math.min(...xs), maxX=Math.max(...xs), minY=Math.min(...ys), maxY=Math.max(...ys);
+  const padX=(maxX-minX)*0.12||1, padY=(maxY-minY)*0.12||1;
+  const xMap=x=>42+(x-minX+padX)/(maxX-minX+2*padX)*(w-76);
+  const yMap=y=>34+(maxY-y+padY)/(maxY-minY+2*padY)*(h-86);
+
+  points.forEach(p=>{
+    const d=document.createElement("div");
+    d.className=p.outlier?"bubble":"scatter-dot";
+    d.style.left=xMap(p.x)+"px"; d.style.top=yMap(p.y)+"px";
+    if(p.outlier){d.style.width="16px";d.style.height="16px";}
+    plot.appendChild(d);
+  });
+
+  if(line){
+    const mx=mean(xs), my=mean(ys);
+    const b=covariance(xs,ys)/(sd(xs)**2);
+    const a=my-b*mx;
+    const x1=minX, x2=maxX, y1=a+b*x1, y2=a+b*x2;
+    const px1=xMap(x1), py1=yMap(y1), px2=xMap(x2), py2=yMap(y2);
+    const len=Math.hypot(px2-px1,py2-py1);
+    const angle=Math.atan2(py2-py1,px2-px1)*180/Math.PI;
+    const lineEl=document.createElement("div");
+    lineEl.className="reg-line";
+    lineEl.style.left=px1+"px"; lineEl.style.top=py1+"px"; lineEl.style.width=len+"px"; lineEl.style.transform=`rotate(${angle}deg)`;
+    plot.appendChild(lineEl);
+  }
+}
+
+function updateScatterWidget(){
+  const slope=parseFloat(document.getElementById("slopeSlider").value);
+  const noise=parseFloat(document.getElementById("noiseSlider").value);
+  const outlier=parseInt(document.getElementById("outlierSlider").value);
+  document.getElementById("slopeText").textContent=slope.toFixed(2);
+  document.getElementById("noiseText").textContent=noise.toFixed(2);
+  document.getElementById("outlierText").textContent=outlier?"on":"off";
+  const pts=[];
+  for(let i=0;i<34;i++){
+    const x=i/33*10;
+    const eps=(seededNoise(i)-0.5)*noise*4;
+    pts.push({x:x,y:2+slope*x+eps});
+  }
+  if(outlier) pts.push({x:9.6,y:2-slope*8,outlier:true});
+  drawScatter("scatterPlot",pts,"scatterStat","scatterSummary",true);
+}
+
+function updateNonlinearWidget(){
+  const curve=parseFloat(document.getElementById("curveSlider").value);
+  const noise=parseFloat(document.getElementById("curveNoiseSlider").value);
+  document.getElementById("curveText").textContent=curve.toFixed(2);
+  document.getElementById("curveNoiseText").textContent=noise.toFixed(2);
+  const pts=[];
+  for(let i=0;i<45;i++){
+    const x=i/44*10;
+    const eps=(seededNoise(i+100)-0.5)*noise*3;
+    pts.push({x:x,y:curve*(x-5)**2+eps});
+  }
+  drawScatter("nonlinearPlot",pts,"nonlinearStat","nonlinearSummary",false);
+}
+
+function markQuiz(btn,isCorrect){
+  document.querySelectorAll(".quiz-option").forEach(b=>b.classList.remove("correct","wrong"));
+  btn.classList.add(isCorrect?"correct":"wrong");
+  const exp=document.getElementById("quizExplain");
+  exp.innerHTML=isCorrect
+    ? "<strong>Correct.</strong> Age is a lurking variable because it affects both height and reading ability."
+    : "<strong>Not quite.</strong> The key issue is a lurking variable: age affects both height and reading scores.";
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  calcCovCorr();
+  ["slopeSlider","noiseSlider","outlierSlider"].forEach(id=>document.getElementById(id)?.addEventListener("input",updateScatterWidget));
+  ["curveSlider","curveNoiseSlider"].forEach(id=>document.getElementById(id)?.addEventListener("input",updateNonlinearWidget));
+  ["covX","covY"].forEach(id=>document.getElementById(id)?.addEventListener("input",calcCovCorr));
+  updateScatterWidget();
+  updateNonlinearWidget();
+  if(window.MathJax && window.MathJax.typesetPromise) window.MathJax.typesetPromise();
+});
+</script>
+</body>
+</html>
